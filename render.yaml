@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: weather-api
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python main.py
+    plan: free
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.18
+      - key: PORT
+        value: 10000
+    healthCheckPath: /health
