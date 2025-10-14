@@ -38,12 +38,20 @@ input_city = arg2  # 这是用户输入的城市名称
 ```python
 def main(arg1, arg2):
     """
-    arg1: 天气API返回的数据
+    arg1: 天气API返回的数据（可能是列表或对象）
     arg2: 开始步骤输入的城市名称
     """
     
-    # 1. 解析天气数据
+    # 1. 处理天气数据 - 确保是对象格式
     weather_data = arg1
+    
+    # 如果arg1是列表，取第一个元素
+    if isinstance(weather_data, list) and len(weather_data) > 0:
+        weather_data = weather_data[0]
+    
+    # 确保weather_data是字典
+    if not isinstance(weather_data, dict):
+        weather_data = {}
     
     # 提取天气信息
     city = weather_data.get('city', arg2)  # 优先使用API返回的城市名

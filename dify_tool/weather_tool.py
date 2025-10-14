@@ -39,29 +39,29 @@ class WeatherTool:
             
             data = response.json()
             
-            # 格式化返回数据，使其更适合Dify使用
+            # 直接返回API数据，确保格式与Dify代码执行节点期望一致
             return {
-                "success": True,
-                "data": {
-                    "city": data.get("city", city),
-                    "temperature": data.get("temperature"),
-                    "description": data.get("description"),
-                    "humidity": data.get("humidity")
-                },
-                "message": f"{data.get('city', city)}的当前天气：{data.get('description')}，温度{data.get('temperature')}°C，湿度{data.get('humidity')}%"
+                "city": data.get("city", city),
+                "temperature": data.get("temperature"),
+                "description": data.get("description"),
+                "humidity": data.get("humidity")
             }
             
         except requests.exceptions.RequestException as e:
             return {
-                "success": False,
-                "error": f"网络请求失败: {str(e)}",
-                "message": f"无法获取{city}的天气信息，请检查网络连接或稍后重试"
+                "city": city,
+                "temperature": 0,
+                "description": "网络请求失败",
+                "humidity": 0,
+                "error": f"网络请求失败: {str(e)}"
             }
         except Exception as e:
             return {
-                "success": False,
-                "error": f"获取天气信息失败: {str(e)}",
-                "message": f"获取{city}天气信息时发生错误"
+                "city": city,
+                "temperature": 0,
+                "description": "获取天气信息失败",
+                "humidity": 0,
+                "error": f"获取天气信息失败: {str(e)}"
             }
     
     def format_weather_response(self, weather_data: Dict[str, Any]) -> str:
@@ -74,14 +74,14 @@ class WeatherTool:
         Returns:
             格式化的天气信息文本
         """
-        if not weather_data.get("success", False):
-            return weather_data.get("message", "获取天气信息失败")
+        # 检查是否有错误
+        if "error" in weather_data:
+            return f"❌ 获取天气信息失败: {weather_data.get('error', '未知错误')}"
         
-        data = weather_data.get("data", {})
-        city = data.get("city", "未知城市")
-        temperature = data.get("temperature", "未知")
-        description = data.get("description", "未知")
-        humidity = data.get("humidity", "未知")
+        city = weather_data.get("city", "未知城市")
+        temperature = weather_data.get("temperature", "未知")
+        description = weather_data.get("description", "未知")
+        humidity = weather_data.get("humidity", "未知")
         
         return f"""🌤️ {city}天气信息：
 📍 城市：{city}
