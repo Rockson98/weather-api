@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://your-app-name.onrender.com",
+      "url": "https://weather-api-slct.onrender.com",
       "description": "Render生产服务器"
     },
     {
