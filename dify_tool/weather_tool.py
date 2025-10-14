@@ -11,7 +11,7 @@ from typing import Dict, Any, Optional
 class WeatherTool:
     """天气查询工具类"""
     
-    def __init__(self, api_base_url: str = "http://localhost:8000"):
+    def __init__(self, api_base_url: str = "https://weather-api-slct.onrender.com"):
         """
         初始化天气工具
         
