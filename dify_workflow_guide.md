@@ -56,6 +56,7 @@ def main(arg1, arg2):
     # 提取天气信息
     city = weather_data.get('city', arg2)  # 优先使用API返回的城市名
     temperature = weather_data.get('temperature', 0)
+    feels_like = weather_data.get('feels_like', 0)
     weather_desc = weather_data.get('description', '')
     humidity = weather_data.get('humidity', 0)
     
@@ -63,15 +64,16 @@ def main(arg1, arg2):
     weather_summary = {
         "城市": city,
         "温度": f"{temperature}°C",
+        "体感温度": f"{feels_like}°C",
         "天气状况": weather_desc,
         "湿度": f"{humidity}%"
     }
     
     # 3. 构建图片描述提示词
-    image_prompt = f"城市{city}的天气景象，{weather_desc}，温度{temperature}度，{humidity}%湿度，{get_weather_mood(weather_desc, temperature)}"
+    image_prompt = f"城市{city}的天气景象，{weather_desc}，温度{temperature}度，体感{feels_like}度，{humidity}%湿度，{get_weather_mood(weather_desc, temperature)}"
     
     # 4. 构建散文描述提示词
-    prose_prompt = f"请为{city}这座城市写一段优美的散文，描述当前的天气状况：{weather_desc}，温度{temperature}度，湿度{humidity}%"
+    prose_prompt = f"请为{city}这座城市写一段优美的散文，描述当前的天气状况：{weather_desc}，温度{temperature}度，体感温度{feels_like}度，湿度{humidity}%"
     
     # 5. 返回结构化数据供后续节点使用
     return {
@@ -80,6 +82,7 @@ def main(arg1, arg2):
         "prose_prompt": prose_prompt,
         "city": city,
         "temperature": temperature,
+        "feels_like": feels_like,
         "weather_description": weather_desc,
         "humidity": humidity,
         "raw_weather_data": weather_data

@@ -43,6 +43,7 @@ class WeatherTool:
             return {
                 "city": data.get("city", city),
                 "temperature": data.get("temperature"),
+                "feels_like": data.get("feels_like"),
                 "description": data.get("description"),
                 "humidity": data.get("humidity")
             }
@@ -51,6 +52,7 @@ class WeatherTool:
             return {
                 "city": city,
                 "temperature": 0,
+                "feels_like": 0,
                 "description": "网络请求失败",
                 "humidity": 0,
                 "error": f"网络请求失败: {str(e)}"
@@ -59,6 +61,7 @@ class WeatherTool:
             return {
                 "city": city,
                 "temperature": 0,
+                "feels_like": 0,
                 "description": "获取天气信息失败",
                 "humidity": 0,
                 "error": f"获取天气信息失败: {str(e)}"
@@ -80,12 +83,14 @@ class WeatherTool:
         
         city = weather_data.get("city", "未知城市")
         temperature = weather_data.get("temperature", "未知")
+        feels_like = weather_data.get("feels_like", "未知")
         description = weather_data.get("description", "未知")
         humidity = weather_data.get("humidity", "未知")
         
         return f"""🌤️ {city}天气信息：
 📍 城市：{city}
 🌡️ 温度：{temperature}°C
+🤔 体感温度：{feels_like}°C
 ☁️ 天气：{description}
 💧 湿度：{humidity}%"""
     

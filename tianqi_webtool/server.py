@@ -66,6 +66,10 @@ def openapi():
                                                 "type": "number",
                                                 "description": "温度（摄氏度）"
                                             },
+                                            "feels_like": {
+                                                "type": "number",
+                                                "description": "体感温度（摄氏度）"
+                                            },
                                             "description": {
                                                 "type": "string",
                                                 "description": "天气描述"
@@ -145,6 +149,7 @@ def get_weather():
         return jsonify({
             "city": data['name'],
             "temperature": data['main']['temp'],
+            "feels_like": data['main']['feels_like'],
             "description": data['weather'][0]['description'],
             "humidity": data['main']['humidity']
         })
