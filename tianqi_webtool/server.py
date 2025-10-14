@@ -24,6 +24,10 @@ def openapi():
         },
         "servers": [
             {
+                "url": "https://weather-api-slct.onrender.com",
+                "description": "Render生产服务器"
+            },
+            {
                 "url": "http://localhost:8000",
                 "description": "本地开发服务器"
             }
@@ -101,15 +105,34 @@ def openapi():
 def get_weather():
     try:
         city = request.args.get('city', '北京')
+        print(f"Received city parameter: {city}")  # 调试信息
         # 使用硬编码的API密钥
         api_key = "811a271ed44e1d5599d8e0c773417557"
         
         if not api_key:
             return jsonify({"error": "API密钥未配置"}), 500
         
+        # 城市名映射
+        city_mapping = {
+            '北京': 'Beijing',
+            '上海': 'Shanghai',
+            '广州': 'Guangzhou',
+            '深圳': 'Shenzhen',
+            '杭州': 'Hangzhou',
+            '南京': 'Nanjing',
+            '成都': 'Chengdu',
+            '武汉': 'Wuhan',
+            '西安': 'Xian',
+            '重庆': 'Chongqing'
+        }
+        
+        # 转换城市名
+        query_city = city_mapping.get(city, city)
+        print(f"Query city: {query_city}")  # 调试信息
+        
         url = f"https://api.openweathermap.org/data/2.5/weather"
         params = {
-            'q': city,
+            'q': query_city,
             'appid': api_key,
             'units': 'metric',
             'lang': 'zh_cn'
