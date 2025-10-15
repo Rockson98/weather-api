@@ -110,8 +110,8 @@ def get_weather():
     try:
         city = request.args.get('city', '北京')
         print(f"Received city parameter: {city}")  # 调试信息
-        # 从环境变量获取API密钥
-        api_key = os.getenv('WEATHER_API_KEY')
+        # 从环境变量获取API密钥，如果未设置则使用默认值
+        api_key = os.getenv('WEATHER_API_KEY', '811a271ed44e1d5599d8e0c773417557')
         
         if not api_key:
             return jsonify({"error": "API密钥未配置"}), 500
