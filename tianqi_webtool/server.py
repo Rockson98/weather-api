@@ -39,16 +39,16 @@ def openapi():
                     "description": "根据城市名称获取当前天气信息",
                     "operationId": "getWeather",
                     "parameters": [
-                        {
-                            "name": "city",
-                            "in": "query",
-                            "description": "城市名称",
-                            "required": True,
-                            "schema": {
-                                "type": "string",
-                                "example": "北京"
-                            }
-                        }
+                               {
+                                   "name": "city",
+                                   "in": "query",
+                                   "description": "城市名称（支持中文、英文或中英文混合，如：北京、Beijing、New York、纽约等）",
+                                   "required": True,
+                                   "schema": {
+                                       "type": "string",
+                                       "example": "北京"
+                                   }
+                               }
                     ],
                     "responses": {
                         "200": {
@@ -116,7 +116,7 @@ def get_weather():
         if not api_key:
             return jsonify({"error": "API密钥未配置"}), 500
         
-        # 城市名映射
+        # 城市名映射（可选，用于常见城市的中英文转换）
         city_mapping = {
             '北京': 'Beijing',
             '上海': 'Shanghai',
@@ -127,12 +127,48 @@ def get_weather():
             '成都': 'Chengdu',
             '武汉': 'Wuhan',
             '西安': 'Xian',
-            '重庆': 'Chongqing'
+            '重庆': 'Chongqing',
+            '天津': 'Tianjin',
+            '苏州': 'Suzhou',
+            '青岛': 'Qingdao',
+            '大连': 'Dalian',
+            '厦门': 'Xiamen',
+            '福州': 'Fuzhou',
+            '济南': 'Jinan',
+            '郑州': 'Zhengzhou',
+            '长沙': 'Changsha',
+            '昆明': 'Kunming',
+            '贵阳': 'Guiyang',
+            '兰州': 'Lanzhou',
+            '银川': 'Yinchuan',
+            '西宁': 'Xining',
+            '乌鲁木齐': 'Urumqi',
+            '拉萨': 'Lhasa',
+            '呼和浩特': 'Hohhot',
+            '石家庄': 'Shijiazhuang',
+            '太原': 'Taiyuan',
+            '沈阳': 'Shenyang',
+            '长春': 'Changchun',
+            '哈尔滨': 'Harbin',
+            '合肥': 'Hefei',
+            '南昌': 'Nanchang',
+            '南宁': 'Nanning',
+            '海口': 'Haikou',
+            '三亚': 'Sanya'
         }
         
-        # 转换城市名
-        query_city = city_mapping.get(city, city)
-        print(f"Query city: {query_city}")  # 调试信息
+        # 智能城市名处理
+        # 1. 如果输入的是中文城市名且在映射表中，使用英文名
+        # 2. 如果输入的是英文城市名或不在映射表中，直接使用原输入
+        # 3. 支持中英文混合查询
+        if city in city_mapping:
+            query_city = city_mapping[city]
+            print(f"使用映射的城市名: {city} -> {query_city}")
+        else:
+            query_city = city
+            print(f"直接使用输入的城市名: {query_city}")
+        
+        print(f"最终查询城市: {query_city}")  # 调试信息
         
         url = f"https://api.openweathermap.org/data/2.5/weather"
         params = {
