@@ -24,8 +24,8 @@ def openapi():
         },
         "servers": [
             {
-                "url": "https://your-app-name.onrender.com",
-                "description": "Render生产服务器（请替换为您的实际URL）"
+                "url": "https://weather-api-d7j0.onrender.com",
+                "description": "Render生产服务器"
             },
             {
                 "url": "http://localhost:8000",
